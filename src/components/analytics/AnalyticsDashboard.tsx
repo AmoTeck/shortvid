@@ -50,7 +50,7 @@ export default function AnalyticsDashboard() {
         setError(null);
         
         const supabase = getSupabaseClient()
-const { data, error } = await supabase.from('analytics').select(...)
+/*const { data, error } = await supabase.from('analytics').select(...)
             *,
             video:video_id (
               id,
@@ -59,7 +59,11 @@ const { data, error } = await supabase.from('analytics').select(...)
             )
           )
           .order('date', { ascending: false });
-        
+*/// Inside the useEffect's fetchAnalytics function
+const { data, error } = await supabase
+  .from('analytics')
+  .select(`*, video:video_id (id, title, thumbnail_url)`) // Properly formatted select
+  .order('date', { ascending: false });    
         if (error) throw error;
         
         setAnalytics(data || []);
