@@ -62,7 +62,7 @@ export default function AnalyticsDashboard() {
 */// Inside the useEffect's fetchAnalytics function
 const { data, error } = await supabase
   .from('analytics')
-  .select(`*,video:videos (id, title, thumbnail_url)`) // Properly formatted select
+  .select(`*`) // Properly formatted select
   .order('date', { ascending: false });
 /*
 const { data, error } = await supabase
