@@ -75,15 +75,13 @@ const { data, error } = await supabase
         
         // Calculate total stats
         if (data && data.length > 0) {
-          const totals = data.reduce((acc, item) => {
-            return {
-              views: acc.views + (item.views || 0),
-              likes: acc.likes + (item.likes || 0),
-              comments: acc.comments + (item.comments || 0),
-              shares: acc.shares + (item.shares || 0),
-              watch_time: acc.watch_time + (item.watch_time || 0)
-            };
-          }, {
+          const totals = data.reduce((acc, item) => ({
+          views: acc.views + (item.views || 0),
+          likes: acc.likes + (item.likes || 0),
+          comments: acc.comments + (item.comments || 0),
+          shares: acc.shares + (item.shares || 0),
+          watch_time: acc.watch_time + (item.watch_time || 0),
+        }), {
             views: 0,
             likes: 0,
             comments: 0,
