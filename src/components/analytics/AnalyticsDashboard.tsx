@@ -11,16 +11,16 @@ import Badge from '@/components/ui/Badge';
 import EmptyState from '@/components/ui/EmptyState';
 
 interface AnalyticsData {
-  id: string;
-  video_id: string;
-  platform: string;
-  views: number;
-  likes: number;
-  comments: number;
-  shares: number;
-  watch_time: number;
-  date: string;
-  video: {
+  id?: string;
+  video_id?: string;
+  platform?: string;
+  views?: number;
+  likes?: number;
+  comments?: number;
+  shares?: number;
+  watch_time?: number;
+  date?: string;
+  video?: {
     id: string;
     title: string;
     thumbnail_url: string;
@@ -62,15 +62,7 @@ export default function AnalyticsDashboard() {
 */// Inside the useEffect's fetchAnalytics function
 const { data, error } = await supabase
   .from('analytics')
-  .select(`id,
-  video_id,
-  platform,
-  views,
-  likes,
-  comments,
-  shares,
-  watch_time,
-  date, video:videos (id, title, thumbnail_url)`) // Properly formatted select
+  .select(`*,video:videos (id, title, thumbnail_url)`) // Properly formatted select
   .order('date', { ascending: false });
 /*
 const { data, error } = await supabase
