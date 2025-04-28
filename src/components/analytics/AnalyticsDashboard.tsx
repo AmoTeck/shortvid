@@ -57,7 +57,7 @@ const { data, error } = await supabase.from('analytics').select(...)
               title,
               thumbnail_url
             )
-          `)
+          )
           .order('date', { ascending: false });
         
         if (error) throw error;
