@@ -59,16 +59,16 @@ export default function AnalyticsDashboard() {
             )
           )
           .order('date', { ascending: false });
-// Inside the useEffect's fetchAnalytics function
+*/// Inside the useEffect's fetchAnalytics function
 const { data, error } = await supabase
   .from('analytics')
-  .select(`*, video:video_id (id, title, thumbnail_url)`) // Properly formatted select
+  .select(`*, video:video (id, title, thumbnail_url)`) // Properly formatted select
   .order('date', { ascending: false });
-*/
+/*
 const { data, error } = await supabase
   .from('analytics')
   .select(`*, video:videos (id, title, thumbnail_url) on video_id`, { count: 'exact' })
-  .order('date', { ascending: false });
+  .order('date', { ascending: false });*/
         if (error) throw error;
         
         setAnalytics(data || []);
