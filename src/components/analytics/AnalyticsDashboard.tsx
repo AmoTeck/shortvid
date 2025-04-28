@@ -89,7 +89,7 @@ const { data, error } = await supabase
             comments: 0,
             shares: 0,
             watch_time: 0
-          });
+          }as const);
           
           setTotalStats(totals);
         }
