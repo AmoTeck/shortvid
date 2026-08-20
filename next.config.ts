@@ -1,8 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true, // 💥 Skippar ESLint-fel vid deploy
-  },
-}
+import type { NextConfig } from "next";
 
-export default nextConfig
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  allowedDevOrigins: ["*.e2b.app", "*.e2b.dev"],
+  // Optimize for mobile / edge hosting
+  poweredByHeader: false,
+  compress: true,
+};
+
+export default nextConfig;

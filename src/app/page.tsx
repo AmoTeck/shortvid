@@ -1,103 +1,97 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import { useEffect, useState } from "react";
+import { useApp } from "@/lib/store";
+import { Sidebar } from "@/components/Sidebar";
+import { Toast } from "@/components/Toast";
+import { CreateView } from "@/components/CreateView";
+import { LibraryView } from "@/components/LibraryView";
+import { StoryView } from "@/components/StoryView";
+import { CharactersView } from "@/components/CharactersView";
+import { ScenesView } from "@/components/ScenesView";
+import { RenderView } from "@/components/RenderView";
+import { MetadataView } from "@/components/MetadataView";
+import { SettingsModal } from "@/components/SettingsModal";
+import { AuthModal } from "@/components/AuthModal";
+import { VoiceView } from "@/components/VoiceView";
+import { SubtitlesView } from "@/components/SubtitlesView";
+import { OptimizeView } from "@/components/OptimizeView";
+import { Loader2 } from "lucide-react";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function HomePage() {
+  const ready = useApp((s) => s.ready);
+  const init = useApp((s) => s.init);
+  const tab = useApp((s) => s.activeTab);
+  const current = useApp((s) => s.current);
+  const session = useApp((s) => s.session);
+  const rendering = useApp((s) => s.rendering);
+  const renderProgress = useApp((s) => s.renderProgress);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  useEffect(() => {
+    init();
+  }, [init]);
+
+  if (!ready) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-indigo-400 mx-auto mb-3" />
+          <p className="text-sm text-[var(--color-text-muted)]">Loading StoryCinema…</p>
         </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen">
+      {session && <Sidebar onSettings={() => setSettingsOpen(true)} />}
+
+      <main
+        className={`flex-1 min-w-0 min-h-screen overflow-x-hidden ${
+          session ? "pt-14 pb-20 md:pt-0 md:pb-0" : ""
+        }`}
+      >
+        {session && current && tab !== "create" && tab !== "library" && (
+          <div className="sticky top-14 md:top-0 z-20 border-b border-[var(--color-border)] bg-[rgba(7,8,13,0.85)] backdrop-blur-md px-3 md:px-6 py-2 flex items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <div className="font-bold truncate text-sm md:text-base">{current.title}</div>
+              <div className="text-[11px] text-[var(--color-text-muted)] truncate">
+                {current.style} · {current.scenes.length} scenes · v{current.version || 1}
+                {current.archived ? " · archived" : ""}
+              </div>
+            </div>
+            {rendering && (
+              <div className="flex items-center gap-2 min-w-[100px]">
+                <div className="progress flex-1 w-16 md:w-24">
+                  <div className="progress-bar" style={{ width: `${renderProgress * 100}%` }} />
+                </div>
+                <span className="text-xs text-indigo-300">{Math.round(renderProgress * 100)}%</span>
+              </div>
+            )}
+            <span className="badge badge-accent hidden sm:inline-flex">{current.status}</span>
+          </div>
+        )}
+
+        {session && (
+          <>
+            {tab === "create" && <CreateView />}
+            {tab === "library" && <LibraryView />}
+            {tab === "story" && <StoryView />}
+            {tab === "characters" && <CharactersView />}
+            {tab === "scenes" && <ScenesView />}
+            {tab === "voice" && <VoiceView />}
+            {tab === "subtitles" && <SubtitlesView />}
+            {tab === "optimize" && <OptimizeView />}
+            {tab === "render" && <RenderView />}
+            {tab === "metadata" && <MetadataView />}
+          </>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <AuthModal />
+      <Toast />
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }
