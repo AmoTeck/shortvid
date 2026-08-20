@@ -1,55 +1,48 @@
-# FacelessFlow
+# StoryCinema
 
-[![Deploy on Vercel](https://vercel.com/button)](https://facelessflow.vercel.app)
+**Cinematic story-video studio — 100% free, zero API keys, runs entirely in your browser.**
 
-FacelessFlow is an AI-driven SaaS platform that automatically generates, edits, and publishes short vertical videos for TikTok and YouTube Shorts — without showing your face.
+Type a title → get a complete film: locked characters, editable scene prompts, living motion video, and professional multi-platform metadata.
 
----
+## Features
 
-## ✨ Features
+1. **Storytelling engine** — full narrative from a single title (logline, synopsis, beats, dialogue)
+2. **Character consistency** — identity-locked appearance + consistency prompts across every scene
+3. **Editable prompts** — full control over character prompts, scene visual prompts, global style
+4. **Scene types & narrative structures** — 12 scene types, 8 structures (Three-Act, Hero’s Journey, Save the Cat…)
+5. **Per-scene living video** — real motion (breathing, blinks, camera, weather, dialogue) via Canvas + MediaRecorder — not static slideshows
+6. **Title → full film** — one click generates story, cast, scenes, metadata
+7. **Pro social metadata** — YouTube, Shorts, TikTok, Reels, Feed, Facebook, X, LinkedIn, Snapchat, Pinterest
+8. **Ready to use** — no demo data, no external AI subscriptions
+9. **$0 cost** — local story AI + local renderer + IndexedDB storage
+10. **Editable / regenerable metadata** — per platform, with thumbnail variants
+11. **Film-grade controls** — camera angles, lighting moods, color grades, transitions, quality tiers (Draft → IMAX)
+12. **Library, autosave, download WebM scenes & full film**
 
-- 🎥 **Script to video** pipeline using GPT, ElevenLabs, Shotstack and stock footage
-- 🧠 Generate short-form scripts using OpenAI GPT
-- 🎙 Natural voiceover with ElevenLabs API
-- 🎬 Automated editing with Shotstack
-- 📽 Stock video from Pexels
-- 🗓 Schedule videos for YouTube Shorts & TikTok
-- 📊 Analytics dashboard
-- 🔐 Secure API key storage (Supabase)
+## Stack
 
----
+- Next.js 15 (App Router) + React 19 + TypeScript
+- Tailwind CSS 4
+- Zustand + idb-keyval (IndexedDB)
+- Framer Motion + Lucide
+- **No OpenAI / ElevenLabs / Shotstack / Supabase required**
 
-## 🧪 Tech Stack
+## Run
 
-| Layer         | Tech                      |
-|---------------|---------------------------|
-| Frontend      | Next.js (App Router)      |
-| UI Components | Tailwind, ShadCN UI       |
-| Animations    | Framer Motion             |
-| Backend       | Next.js API Routes        |
-| Database      | Supabase (PostgreSQL)     |
-| Auth          | Supabase Auth             |
-| Storage       | Supabase Storage          |
-| Deployment    | Vercel                    |
+```bash
+npm install
+npm run dev
+```
 
----
+Open [http://localhost:3000](http://localhost:3000).
 
-## 🔌 External APIs
+## Workflow
 
-- OpenAI GPT — script generation  
-- ElevenLabs — voiceover narration  
-- Shotstack — video editing & rendering  
-- Pexels — stock footage  
-- YouTube API — auto-publish Shorts  
-- TikTok API — auto-publish TikToks
+1. **Create** — enter a title, pick style / structure / length / aspect
+2. **Story** — edit bible, global style prompt, themes
+3. **Characters** — lock appearance, rebuild consistency prompts
+4. **Scenes** — edit narration, dialogue, camera, lighting, visual prompts; render one-by-one
+5. **Render** — full film with title/end cards; download WebM
+6. **Metadata** — generate & tweak platform packs + thumbnails
 
----
-
-## 🚀 Deployment
-
-Deployed via [Vercel](https://vercel.com)
-
----
-
-## 📁 Project Structure
-
+Everything stays on your device.

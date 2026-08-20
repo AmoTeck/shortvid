@@ -1,0 +1,20 @@
+{
+  "name": "StoryCinema",
+  "short_name": "StoryCinema",
+  "description": "Cinematic story video studio — voice, subs, growth engine — zero cost",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#07080d",
+  "theme_color": "#6c8cff",
+  "lang": "en",
+  "categories": ["entertainment", "photo", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
