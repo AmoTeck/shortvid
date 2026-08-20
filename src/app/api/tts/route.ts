@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 /**
  * Free multi-language TTS proxy.
- * Uses Google Translate TTS endpoint (no API key) — widely used for free VO.
- * Falls back with clear error if blocked.
+ * Tries Google Translate TTS (no key). On failure returns 204 so the client
+ * falls back to browser SpeechSynthesis — still $0 and multi-language.
  */
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -20,6 +20,8 @@ export async function GET(req: NextRequest) {
     `&tl=${encodeURIComponent(lang)}&client=tw-ob`;
 
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(url, {
       headers: {
         "User-Agent":
@@ -28,11 +30,15 @@ export async function GET(req: NextRequest) {
         Referer: "https://translate.google.com/",
       },
       cache: "no-store",
+      signal: controller.signal,
     });
+    clearTimeout(timer);
     if (!res.ok) {
-      return NextResponse.json({ error: "TTS upstream failed", status: res.status }, { status: 502 });
+      // Soft fail — client uses SpeechSynthesis
+      return new NextResponse(null, { status: 204 });
     }
     const buf = await res.arrayBuffer();
+    if (!buf.byteLength) return new NextResponse(null, { status: 204 });
     return new NextResponse(buf, {
       status: 200,
       headers: {
@@ -41,8 +47,7 @@ export async function GET(req: NextRequest) {
         "Access-Control-Allow-Origin": "*",
       },
     });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : "TTS error";
-    return NextResponse.json({ error: msg }, { status: 500 });
+  } catch {
+    return new NextResponse(null, { status: 204 });
   }
 }
